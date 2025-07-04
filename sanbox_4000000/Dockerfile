@@ -4,7 +4,7 @@ COPY src/pwn.c /pwn.c
 COPY src/seccomp-bpf.h /seccomp-bpf.h
 RUN apt update && \
     apt --no-install-recommends install -y gcc gcc-multilib && \
-    gcc -o /pwn -fstack-protector-all -no-pie /pwn.c -lseccomp
+    gcc -o /pwn -fstack-protector-all -no-pie /pwn.c
 
 FROM ghcr.io/w4terdr0p/w4terctf-2023/xinetd:alpine
 

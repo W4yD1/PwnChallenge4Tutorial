@@ -2,8 +2,8 @@ FROM ubuntu:20.04 AS builder
 
 COPY src/pwn.c /pwn.c
 RUN apt update && \
-    apt --no-install-recommends install -y gcc gcc-multilib && \
-    gcc -o /pwn -fstack-protector-all -no-pie /pwn.c
+    apt --no-install-recommends install -y gcc gcc-multilib libseccomp-dev&& \
+    gcc -o /pwn -fstack-protector-all -no-pie /pwn.c -lseccomp
 
 FROM ghcr.io/w4terdr0p/w4terctf-2023/xinetd:alpine
 

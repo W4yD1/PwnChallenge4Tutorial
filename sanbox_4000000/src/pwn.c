@@ -1,7 +1,6 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
-#include <seccomp.h>
 #include <sys/prctl.h>
 #include <linux/filter.h>
 #include "seccomp-bpf.h"
