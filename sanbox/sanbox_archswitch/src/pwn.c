@@ -25,14 +25,11 @@ int sanbox()
         /* Grab the system call number. */
         EXAMINE_SYSCALL,
         /* List allowed syscalls. */
-        ALLOW_SYSCALL(execve),
-        ALLOW_SYSCALL(read),
-        ALLOW_SYSCALL(write),
-        ALLOW_SYSCALL(munmap),
-        ALLOW_SYSCALL(close),
-        ALLOW_SYSCALL(stat),
-        ALLOW_SYSCALL(fstat),
-        KILL_PROCESS,
+
+        BLOCK_SYSCALL(execve),
+        BLOCK_SYSCALL(read),
+        BLOCK_SYSCALL(write),
+        ALLOW_PROCESS,
     };
     struct sock_fprog prog = {
         .len = (unsigned short)(sizeof(filter) / sizeof(filter[0])),

@@ -1,9 +1,10 @@
 FROM ubuntu:20.04 AS builder
 
-COPY src/dictionary.c /dictionary.c
+COPY src/pwn.c /pwn.c
+COPY src/seccomp-bpf.h /seccomp-bpf.h
 RUN apt update && \
     apt --no-install-recommends install -y gcc gcc-multilib && \
-    gcc -o /dictionary -fno-stack-protector -no-pie /dictionary.c
+    gcc -o /pwn -fstack-protector-all -no-pie /pwn.c
 
 FROM ghcr.io/w4terdr0p/w4terctf-2023/xinetd:alpine
 
@@ -30,6 +31,6 @@ RUN chmod +x /init.sh && \
 
 COPY --from=builder /lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 /home/ctf/lib64/
 COPY --from=builder /lib/x86_64-linux-gnu/libc.so.6 /home/ctf/lib/x86_64-linux-gnu/
-COPY --from=builder --chown=ctf:ctf --chmod=500 /dictionary /home/ctf/
+COPY --from=builder --chown=ctf:ctf --chmod=500 /pwn /home/ctf/
 
 CMD ["xinetd", "-dontfork"]
