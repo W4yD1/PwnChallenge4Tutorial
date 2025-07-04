@@ -28,6 +28,7 @@ RUN chmod +x /init.sh && \
     cp /bin/cat /home/ctf/bin && \
     cp /bin/base64 /home/ctf/bin
 
+COPY --from=builder /lib/x86_64-linux-gnu/libseccomp.so.2 /home/ctf/lib/x86_64-linux-gnu/
 COPY --from=builder /lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 /home/ctf/lib64/
 COPY --from=builder /lib/x86_64-linux-gnu/libc.so.6 /home/ctf/lib/x86_64-linux-gnu/
 COPY --from=builder --chown=ctf:ctf --chmod=500 /pwn /home/ctf/

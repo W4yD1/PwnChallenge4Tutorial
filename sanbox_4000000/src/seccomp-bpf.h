@@ -25,6 +25,10 @@
 #ifndef PR_SET_NO_NEW_PRIVS
 # define PR_SET_NO_NEW_PRIVS 38
 #endif
+ 
+#ifndef SECCOMP_MODE_STRICT
+# define SECCOMP_MODE_STRICT 1
+#endif
 
 #include <linux/unistd.h>
 #include <linux/audit.h>
@@ -63,6 +67,9 @@ struct seccomp_data {
 # define ARCH_NR	0
 #endif
 
+/* x32 syscall flag bit */
+#define __X32_SYSCALL_BIT	0x40000000
+
 #define VALIDATE_ARCHITECTURE \
 	BPF_STMT(BPF_LD+BPF_W+BPF_ABS, arch_nr), \
 	BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, ARCH_NR, 1, 0), \
@@ -75,7 +82,21 @@ struct seccomp_data {
 	BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, __NR_##name, 0, 1), \
 	BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_ALLOW)
 
+#define BLOCK_SYSCALL(name) \
+	BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, __NR_##name, 0, 1), \
+	BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_KILL)
+
+#define BLOCK_X32_EXECVE1 \
+	BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, 520, 0, 1), \
+	BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_KILL)
+#define BLOCK_X32_EXECVE2 \
+	BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, __X32_SYSCALL_BIT + 520, 0, 1), \
+	BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_KILL)
+
 #define KILL_PROCESS \
 	BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_KILL)
+
+#define ALLOW_PROCESS \
+	BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_ALLOW)
 
 #endif /* _SECCOMP_BPF_H_ */
