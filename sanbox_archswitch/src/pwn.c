@@ -21,14 +21,17 @@ int sanbox()
 {
     struct sock_filter filter[] = {
         /* Validate architecture. */
-        VALIDATE_ARCHITECTURE,
+        // VALIDATE_ARCHITECTURE,
         /* Grab the system call number. */
         EXAMINE_SYSCALL,
         /* List allowed syscalls. */
         ALLOW_SYSCALL(execve),
-        ALLOW_SYSCALL(execveat),
         ALLOW_SYSCALL(read),
         ALLOW_SYSCALL(write),
+        ALLOW_SYSCALL(munmap),
+        ALLOW_SYSCALL(close),
+        ALLOW_SYSCALL(stat),
+        ALLOW_SYSCALL(fstat),
         KILL_PROCESS,
     };
     struct sock_fprog prog = {
