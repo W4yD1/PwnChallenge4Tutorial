@@ -10,21 +10,25 @@ void init()
 
 void bbbaaaccckkkddd000ooorrr()
 {
-    system("no way\x00");
+    system("/bin/sh\x00");
 }
 
-char flag[16] = "/bin/sh";
+void vuln()
+{
+    char buf[32];
+    size_t target;
+    puts("where do you wanna read");
+    read(0, &target, 8);
+    puts("your content");
+    read(0, target, 8);
+
+    puts("trigger stack smash");
+    read(0, buf, 0x100);
+}
 
 int main()
 {
     init();
-    size_t var_to_override = 0xdeadbeaf;
-    char buf[32];
-    puts("var before gets :");
-    printf("0x%lx\n", var_to_override);
-    puts("Now input something :");
-    gets(buf);
-    puts("var after gets :");
-    printf("0x%lx\n", var_to_override);
+    vuln();
     return 0;
 }

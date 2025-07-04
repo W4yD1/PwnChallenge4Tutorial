@@ -1,30 +1,29 @@
 #include <stdio.h>
 #include <string.h>
 
+char flag[100];
+
 void init()
 {
     setvbuf(stdin, 0, 2, 0);
     setvbuf(stdout, 0, 2, 0);
     setvbuf(stderr, 0, 2, 0);
+
+    int fd = open("/flag", 0, 0);
+    read(fd, flag, 100);
+    close(fd);
 }
 
-void bbbaaaccckkkddd000ooorrr()
+void vuln()
 {
-    system("no way\x00");
+    char buf[32];
+    puts("trigger stack smash");
+    gets(buf);
 }
-
-char flag[16] = "/bin/sh";
 
 int main()
 {
     init();
-    size_t var_to_override = 0xdeadbeaf;
-    char buf[32];
-    puts("var before gets :");
-    printf("0x%lx\n", var_to_override);
-    puts("Now input something :");
-    gets(buf);
-    puts("var after gets :");
-    printf("0x%lx\n", var_to_override);
+    vuln();
     return 0;
 }
