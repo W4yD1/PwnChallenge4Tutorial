@@ -29,6 +29,7 @@ int sanbox()
         BLOCK_SYSCALL(execve),
         BLOCK_SYSCALL(read),
         BLOCK_SYSCALL(write),
+        BLOCK_SYSCALL(munmap),
         ALLOW_PROCESS,
     };
     struct sock_fprog prog = {

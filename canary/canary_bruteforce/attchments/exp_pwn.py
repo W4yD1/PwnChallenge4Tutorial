@@ -58,7 +58,7 @@ for i in range(7):
         else:
             canary+=p8(key)
             print("success")
-            print("canary : ", hex(canary))
+            print("canary : ", canary)
             break
 
 rl()
